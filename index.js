@@ -59,8 +59,6 @@ window.addEventListener("load", function () {
       function (json) {
         for (var i = 0; i < json.data.length; i++) {
           perc = json.data[i].upVotes/(json.data[i].upVotes+json.data[i].downVotes)*100
-          console.log(perc)
-          console.log(perc.toString())
           document.getElementById("like" + json.data[i].id).innerHTML = (!Number.isNaN(perc) && (Math.floor(perc).toString() + "%") || "--");
         }
       }
@@ -80,7 +78,7 @@ window.addEventListener("load", function () {
   }
 
   if (document.location.search.substr(0, 5) === "?uid=") {
-    uid.value = document.location.search.substr(5, 10).replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
+    uid.value = document.location.search.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
   }
 
   uid.oninput = function () {
@@ -89,7 +87,7 @@ window.addEventListener("load", function () {
 
   document.getElementById("copy").onmousedown = function () {
     navigator.clipboard
-      .writeText(window.location.origin + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder))
+      .writeText(window.location.href + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder))
       .then(function () {
         window.alert("Copied link to clipboard!");
       });
