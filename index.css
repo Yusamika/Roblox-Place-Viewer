@@ -1,0 +1,49 @@
+#UserBundle {
+    display: inline-block;
+    border: #191b1d;
+    border-style: solid;
+}
+
+#Places a {
+    text-decoration: none;
+}
+
+#Places span{
+    padding: 0px 12px 0px 3px;
+    margin: 0px 0px 0px -2px;
+}
+
+#Places img {
+    border-radius: 8px;
+}
+
+#Places .game-card-info img {
+    border-radius: 0px;
+    filter: brightness(150%);
+}
+
+#Places {
+    padding-top: 8px;
+    display: grid;
+    grid-template-columns: repeat(11, 160px);
+    gap: 9.5px;
+}
+
+#Places * {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.game-card-name.game-name-title {
+    text-overflow: ellipsis;
+}
+
+* {
+    background-color: #232527;
+    color: #fff;
+    font-family: HCo Gotham SSm,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+}
+
+div {
+    overflow: hidden;
+    white-space: nowrap;
+}

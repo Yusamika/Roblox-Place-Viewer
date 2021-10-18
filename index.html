@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+    <title>Roblox Public Place Viewer</title>
+    <link rel="stylesheet" href="./index.css">
+    <script src="./index.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="icon" href="./content/plr.png" type="image/x-icon">
+    
+    <a class="game-card-link" id="GameCard"></a>
+</head>
+
+<body>    
+    <p style="float: right; text-align: right;">intended for 1920x1080 screens<br><br>searching too many users will get you ratelimited<br>hover over icon to see place name, hover over text to see description</p>
+
+    <div id="UserBundle">
+        <h2 id="name" style="text-align: center;"><a href="https://www.roblox.com/users/1/profile" style="text-decoration: none;"><i>Roblox</i></a>'s Places</h2>
+        <img id="pfp" src="./content/pfp.png" style="vertical-align: middle; ">
+        <div style="display:inline-block; vertical-align: middle; text-align: center;">
+            <label for="uid">User ID</label>
+            <input id="uid" name="uid" placeholder="1"><br>
+            <button id="search" style="margin-top: 5px;">Search</button>
+            <br>
+            <button id="copy" style="margin-top: 5px; vertical-align: bottom;">Copy</button>
+            <br>
+            <button id="back" style="margin-top: 5px; vertical-align: bottom;" disabled=true>Back</button>
+            <button id="forward" style="margin-top: 5px; vertical-align: bottom;" disabled=true>Next</button>
+        </div>
+    </div>
+    
+    <div id="Places">
+</body>
