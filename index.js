@@ -1,7 +1,6 @@
 var HttpClientGet = function (aUrl, aCallback) {
   let header = new Headers();
   header.append("Origin", window.location);
-console.log(aUrl)
   fetch(aUrl, {headers: header,})
     .then((response) => response.json())
     .then((json) => aCallback(json))
