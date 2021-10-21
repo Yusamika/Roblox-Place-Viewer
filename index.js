@@ -86,7 +86,7 @@ window.addEventListener("load", function () {
 
   document.getElementById("copy").onmousedown = function () {
     navigator.clipboard
-      .writeText(window.location.href + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder))
+      .writeText(window.location.hostname + window.location.pathname + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder))
       .then(function () {
         window.alert("Copied link to clipboard!");
       });
@@ -104,5 +104,16 @@ window.addEventListener("load", function () {
     dostuff();
   };
 
+  uid.addEventListener("keydown", function(event) { // https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("search").click();
+  }
+});
+
+  
   dostuff();
 });
