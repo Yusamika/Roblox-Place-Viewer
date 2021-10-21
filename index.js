@@ -1,3 +1,5 @@
+var version = "1.1.2"
+
 var HttpClientGet = function (aUrl, aCallback) {
   let header = new Headers();
   header.append("Origin", window.location);
@@ -104,16 +106,14 @@ window.addEventListener("load", function () {
     dostuff();
   };
 
-  uid.addEventListener("keydown", function(event) { // https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
-  // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Cancel the default action, if needed
-    event.preventDefault();
-    // Trigger the button element with a click
-    document.getElementById("search").click();
-  }
-});
+  uid.addEventListener("keyup", function(event) { // https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+      dostuff()
+    }
+  });
 
-  
   dostuff();
+  
+  document.getElementById("version").innerHTML = "v"+version;
 });
