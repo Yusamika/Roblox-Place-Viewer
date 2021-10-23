@@ -1,4 +1,5 @@
 # Roblox-Place-Viewer
-Type in a Roblox UserID, and it will automatically fetch all public places linked to them.
+Type in a Roblox ID, and it will automatically fetch all public places linked to them.<br>
+Works with both people and groups!
 
 Currently hosted over at [my website.](https://sans-undertae.github.io/Roblox-Place-Viewer/)
