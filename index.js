@@ -2,7 +2,7 @@ var version = "1.3"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
-  var Proxy = "https://cors-anywhere.herokuapp.com/";
+  var Proxy = "https://cors-anywhere-sf.herokuapp.com/";
   header.append("Origin", window.location);
   onError = onError || console.log;
 
