@@ -1,8 +1,8 @@
-var version = "1.2.2"
+var version = "1.3"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
-  var Proxy = "https://cors-anywhere-sf.herokuapp.com/";
+  var Proxy = "https://cors-anywhere.herokuapp.com/";
   header.append("Origin", window.location);
   onError = onError || console.log;
 
@@ -76,9 +76,9 @@ window.addEventListener("load", function () {
     if (searchType == "users") {
       document.getElementById("pfp").src = "https://www.roblox.com/headshot-thumbnail/image?&width=150&height=150&format=png&userId=" + ID;
     }else{
-      HttpClientGet("thumbnails.roblox.com/v1/groups/icons?size=150x150&format=Png&isCircular=false&groupIds=" + ID, 
+      HttpClientGet("https://thumbnails.roblox.com/v1/groups/icons?size=150x150&format=Png&isCircular=false&groupIds=" + ID, 
         function(json){
-          document.getElementById("pfp").src = json.data.imageUrl
+          document.getElementById("pfp").src = json.data[0].imageUrl
         }
       )
     }
@@ -86,7 +86,7 @@ window.addEventListener("load", function () {
     HttpClientGet("https://"+searchType+".roblox.com/v1/" + searchType + "/" + ID,
       function (json) {
         if (json.name != null) {
-          document.getElementById("name").innerHTML = "<a href='https://www.roblox.com/users/"+ID+"/profile' style='text-decoration: none;'><i>"+json.name+"</i></a>" + "'s Places";
+          document.getElementById("name").innerHTML = "<a href='https://www.roblox.com/"+searchType+"/"+ID+"' style='text-decoration: none;'><i>"+json.name+"</i></a>" + "'s Places";
         } else {
           document.getElementById("name").innerHTML = "Unknown User!";
         }
@@ -103,13 +103,23 @@ window.addEventListener("load", function () {
     uid.value = document.location.search.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
   }
 
+  if (document.location.search.substr(-5) === "users") {
+    searchType = "users";
+    document.getElementById("group").checked = false
+  }
+
+  if (document.location.search.substr(-6) === "groups") {
+    searchType = "groups";
+    document.getElementById("group").checked = true
+  }
+
   uid.oninput = function () {
     uid.value = uid.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1");
   };
 
   document.getElementById("copy").onmousedown = function () {
     navigator.clipboard
-      .writeText(window.location.hostname + window.location.pathname + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder))
+      .writeText(window.location.hostname + window.location.pathname + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder) + "?searchtype=" + searchType)
       .then(function () {
         window.alert("Copied link to clipboard!");
       });
