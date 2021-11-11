@@ -1,4 +1,4 @@
-var version = "1.3.2"
+var version = "1.3.3"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
