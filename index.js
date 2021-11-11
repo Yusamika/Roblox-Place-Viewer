@@ -1,4 +1,4 @@
-var version = "1.2.1"
+var version = "1.2.2"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
@@ -73,7 +73,15 @@ window.addEventListener("load", function () {
   function dostuff() {
 
     var ID = (uid.value.length > 0 && uid.value) || uid.placeholder;
-    document.getElementById("pfp").src ="https://www.roblox.com/headshot-thumbnail/image?&width=150&height=150&format=png&userId=" +ID;
+    if (searchType == "users") {
+      document.getElementById("pfp").src = "https://www.roblox.com/headshot-thumbnail/image?&width=150&height=150&format=png&userId=" + ID;
+    }else{
+      HttpClientGet("thumbnails.roblox.com/v1/groups/icons?size=150x150&format=Png&isCircular=false&groupIds=" + ID, 
+        function(json){
+          document.getElementById("pfp").src = json.data.imageUrl
+        }
+      )
+    }
     HttpClientGet("https://games.roblox.com/v2/" + searchType + "/" + ID +"/games?limit=50&cursor="+(cursorToSearch || ""), UpdatePage)
     HttpClientGet("https://"+searchType+".roblox.com/v1/" + searchType + "/" + ID,
       function (json) {
