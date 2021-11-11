@@ -1,4 +1,4 @@
-var version = "1.3"
+var version = "1.3.1"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
@@ -101,11 +101,6 @@ window.addEventListener("load", function () {
 
   if (document.location.search.substr(0, 5) === "?uid=") {
     uid.value = document.location.search.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
-  }
-
-  if (document.location.search.substr(-5) === "users") {
-    searchType = "users";
-    document.getElementById("group").checked = false
   }
 
   if (document.location.search.substr(-6) === "groups") {
