@@ -1,4 +1,4 @@
-var version = "1.3.3"
+var version = "1.3.3.1"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
@@ -52,11 +52,11 @@ window.addEventListener("load", function () {
       </div>
       <div class="game-card-info">
         <svg y="16" width="16" height="16">
-         <use xlink:href="content/playing_small.svg#light_common_small"></use>
+         <use xlink:href="content/rating_small.svg#light_common_small"></use>
         </svg>
         <span class="info-label vote-percentage-label" id = "like`+ Place.id +`">100%</span>
         <svg y="16" width="16" height="16">
-          <use xlink:href="content/rating_small.svg#light_common_small"></use>
+          <use xlink:href="content/playing_small.svg#light_common_small"></use>
         </svg>
         <span class="info-label playing-counts-label" id = "plr`+ Place.id +`">0</span>
       </div>`;
