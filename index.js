@@ -1,8 +1,8 @@
-var version = "1.3.1"
+var version = "1.3.2"
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
-  var Proxy = "https://cors-anywhere-sf.herokuapp.com/";
+  var Proxy = "https://cors-anywhere.herokuapp.com/";
   header.append("Origin", window.location);
   onError = onError || console.log;
 
@@ -13,6 +13,7 @@ var HttpClientGet = function (aUrl, aCallback, onError) {
 };
 
 window.addEventListener("load", function () {
+  document.getElementById("GameCard").innerHTML = ""
   var uid = document.getElementById("uid");
   var nextCursor = null;
   var lastCursor = null;
@@ -43,7 +44,22 @@ window.addEventListener("load", function () {
       clone.href = "https://www.roblox.com/games/" + Place.rootPlace.id;
 
       document.getElementById("Places").appendChild(clone);
-      clone.innerHTML =`<span class="thumbnail-2d-container game-card-thumb-container"><img id = "img` +Place.id +`" class="" src="./content/cd.png" alt="` +Place.description +`" title="` +Place.name +`"></span><div class="game-card-name game-name-title" style="text-overflow: ellipsis;overflow: hidden;" title="` +Place.description +`">` +Place.name +`</div><div class="game-card-info"><img src="content/thumb.png" width="12" height="12"><span class="info-label vote-percentage-label" id = "like`+ Place.id +`">100%</span><img src="content/plr.png" width="12" height="12"><span class="info-label playing-counts-label" id = "plr`+ Place.id +`">0</span></div>`;
+      clone.innerHTML = `
+      <span class="thumbnail-2d-container game-card-thumb-container">
+        <img id = "img` +Place.id +`" class="" src="./content/cd.png" alt="` +Place.description +`" width="150" height="150" title="` +Place.name +`">
+      </span>
+      <div class="game-card-name game-name-title" style="text-overflow: ellipsis;overflow: hidden;" title="` +Place.description +`">` +Place.name +`
+      </div>
+      <div class="game-card-info">
+        <svg y="16" width="16" height="16">
+         <use xlink:href="content/playing_small.svg#light_common_small"></use>
+        </svg>
+        <span class="info-label vote-percentage-label" id = "like`+ Place.id +`">100%</span>
+        <svg y="16" width="16" height="16">
+          <use xlink:href="content/rating_small.svg#light_common_small"></use>
+        </svg>
+        <span class="info-label playing-counts-label" id = "plr`+ Place.id +`">0</span>
+      </div>`;
     }
     if (PIDs.length < 1) { return };
     HttpClientGet("https://thumbnails.roblox.com/v1/games/icons?universeIds=" + PIDs.substr(1) + "&size=150x150&format=Png&isCircular=false",
