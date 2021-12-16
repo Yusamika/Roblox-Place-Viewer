@@ -1,4 +1,4 @@
-var version = "1.4.1";
+var version = "1.4.1.1";
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
@@ -189,8 +189,8 @@ window.addEventListener("load", function () {
           document.getElementById("pfp").src = json.data[0].imageUrl
         }
       )
-    }
-    HttpClientGet("https://games.roblox.com/v2/" + searchType + "/" + ID +"/games?limit=50&cursor="+(cursorToSearch || ""), UpdatePage)
+    
+    HttpClientGet("https://games.roblox.com/v2/" + searchType + "/" + ID +"/games?limit=50&accessFilter=Public&cursor="+(cursorToSearch || ""), UpdatePage)
     HttpClientGet("https://"+searchType+".roblox.com/v1/" + searchType + "/" + ID,
       function (json) {
         if (json.name != null) {
