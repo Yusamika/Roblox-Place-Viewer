@@ -1,4 +1,4 @@
-var version = "1.3.3.1"
+var version = "1.4.1";
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
@@ -20,33 +20,149 @@ window.addEventListener("load", function () {
   var cursorToSearch = null;
   var searchType = "users"
 
-  function UpdatePage(json) {
+  async function UpdatePage(json) {
     nextCursor = null;
     lastCursor = null;
     cursorToSearch = null;
     document.getElementById("Places").innerHTML = "";
     var data = json.data;
     var PIDs = "";
+    var Places = [];
     nextCursor = json.nextPageCursor;
     lastCursor = json.previousPageCursor;
 
     document.getElementById("back").disabled = (lastCursor == null)
     document.getElementById("forward").disabled = (nextCursor == null)
-
+    
     for (var i = 0; i < data.length; i++) {
       var Place = data[i];
+      var PlaceData = Places[i] = [];
+      var Place = data[i];
+
+      PIDs = PIDs + "," + Place.id
+
+      PlaceData.universeId = Place.id;
+      PlaceData.id = Place.rootPlace.id;
+      PlaceData.description = (Place.description == null) ? "<No Description>" : Place.description;
+      PlaceData.name = Place.name;
+
+      PlaceData.icon = false;
+      PlaceData.visits = false;
+      PlaceData.likes = false;
+      PlaceData.playing = false;
+      PlaceData.favorites = false;
+    }
+
+    HttpClientGet("https://thumbnails.roblox.com/v1/games/icons?universeIds=" + PIDs + "&size=150x150&format=Png&isCircular=false",
+      function (json) {
+        for (var i = 0; i < json.data.length; i++) {
+          for (var j = 0; j < Places.length; j++) {
+            if (Places[j].universeId == json.data[i].targetId) {
+              Places[j].icon = json.data[i].imageUrl;
+            }
+          }
+        }
+      }
+    );
+
+    HttpClientGet("https://games.roblox.com/v1/games/votes?universeIds=" + PIDs,
+      function (json) {
+        for (var i = 0; i < json.data.length; i++) {
+          for (var j = 0; j < Places.length; j++) {
+            if (Places[j].universeId == json.data[i].id) {
+              perc = json.data[i].upVotes/(json.data[i].upVotes+json.data[i].downVotes)*100
+              Places[j].likes = (!Number.isNaN(perc) && (Math.floor(perc).toString() + "%") || "--");
+            }
+          }
+        }
+      }
+    );
+
+    HttpClientGet("https://games.roblox.com/v1/games?universeIds=" + PIDs,
+      function (json) {
+        for (var i = 0; i < json.data.length; i++) {
+          for (var j = 0; j < Places.length; j++) {
+            if (Places[j].universeId == json.data[i].id) {
+              Places[j].playing = json.data[i].playing;
+              Places[j].visits = json.data[i].visits;
+              Places[j].favorites = json.data[i].favoritedCount;
+              Places[j].uploadDate = new Date(json.data[i].created);
+              Places[j].updateDate = new Date(json.data[i].updated);
+            }
+          }
+        }
+      }
+    );
+
+    var allGood = false
+    do {
+      for (var j = 0; j < Places.length; j++) {
+        if (Places[j].icon === false || Places[j].likes === false || Places[j].playing === false) {
+          allGood = false
+          break
+        } else {
+          allGood = true
+        }
+      }
+      await new Promise(resolve => setTimeout(resolve, 250)); // sleep for 250ms
+    }
+    while (allGood === false)
+
+    Places.sort(function(a, b) {
+      var SortType = document.getElementById('sort').options[document.getElementById('sort').selectedIndex].value;
+
+      if (SortType == "favorites") {
+        if (a.favorites < b.favorites) {
+          return 1;
+        }
+        if (a.favorites > b.favorites) {
+          return -1;
+        }
+      } else if (SortType == "visits") {
+        if (a.visits < b.visits) {
+          return 1;
+        }
+        if (a.visits > b.visits) {
+          return -1;
+        }
+      } else if (SortType == "playing") {
+        if (a.playing < b.playing) {
+          return 1;
+        }
+        if (a.playing > b.playing) {
+          return -1;
+        }
+      } else if (SortType == "updated") {
+        if (a.updateDate < b.updateDate) {
+          return 1;
+        }
+        if (a.updateDate > b.updateDate) {
+          return -1;
+        }
+      } else if (SortType == "uploaded") {
+        if (a.uploadDate < b.uploadDate) {
+          return 1;
+        }
+        if (a.uploadDate > b.uploadDate) {
+          return -1;
+        }
+      }
+
+      return 0;
+    });
+
+    for (var i = 0; i < Places.length; i++) {
+      var Place = Places[i];
       var div = document.getElementById("GameCard");
 
-      PIDs = PIDs + "," + Place.id;
-
       clone = div.cloneNode(true); // true means clone all childNodes and all event handlers
-      clone.id = Place.rootPlace.id;
-      clone.href = "https://www.roblox.com/games/" + Place.rootPlace.id;
+      clone.id = Place.id;
+      clone.href = "https://www.roblox.com/games/" + Place.id + "/" + Place.name;
 
       document.getElementById("Places").appendChild(clone);
       clone.innerHTML = `
       <span class="thumbnail-2d-container game-card-thumb-container">
-        <img id = "img` +Place.id +`" class="" src="./content/cd.png" alt="` +Place.description +`" width="150" height="150" title="` +Place.name +`">
+        <img src="`+Place.icon+`" alt="` +Place.description +`" width="150" height="150" title="` +Place.name +`">
       </span>
       <div class="game-card-name game-name-title" style="text-overflow: ellipsis;overflow: hidden;" title="` +Place.description +`">` +Place.name +`
       </div>
@@ -54,40 +170,16 @@ window.addEventListener("load", function () {
         <svg y="16" width="16" height="16">
          <use xlink:href="content/rating_small.svg#light_common_small"></use>
         </svg>
-        <span class="info-label vote-percentage-label" id = "like`+ Place.id +`">100%</span>
+        <span class="info-label vote-percentage-label"`+ Place.universeId +`">`+Place.likes+`</span>
         <svg y="16" width="16" height="16">
           <use xlink:href="content/playing_small.svg#light_common_small"></use>
         </svg>
-        <span class="info-label playing-counts-label" id = "plr`+ Place.id +`">0</span>
+        <span class="info-label playing-counts-label`+ Place.universeId +`">`+Place.playing+`</span>
       </div>`;
     }
-    if (PIDs.length < 1) { return };
-    HttpClientGet("https://thumbnails.roblox.com/v1/games/icons?universeIds=" + PIDs.substr(1) + "&size=150x150&format=Png&isCircular=false",
-      function (json) {
-        for (var i = 0; i < json.data.length; i++) {
-          document.getElementById("img" + json.data[i].targetId).src = json.data[i].imageUrl || "./content/cd.png";
-        }
-      }
-    );
-    HttpClientGet("https://games.roblox.com/v1/games?universeIds=" + PIDs.substr(1),
-      function (json) {
-        for (var i = 0; i < json.data.length; i++) {
-          document.getElementById("plr" + json.data[i].id).innerHTML = json.data[i].playing;
-        }
-      }
-    );
-    HttpClientGet("https://games.roblox.com/v1/games/votes?universeIds=" + PIDs.substr(1),
-      function (json) {
-        for (var i = 0; i < json.data.length; i++) {
-          perc = json.data[i].upVotes/(json.data[i].upVotes+json.data[i].downVotes)*100
-          document.getElementById("like" + json.data[i].id).innerHTML = (!Number.isNaN(perc) && (Math.floor(perc).toString() + "%") || "--");
-        }
-      }
-    );
-  } 
+  }
 
   function dostuff() {
-
     var ID = (uid.value.length > 0 && uid.value) || uid.placeholder;
     if (searchType == "users") {
       document.getElementById("pfp").src = "https://www.roblox.com/headshot-thumbnail/image?&width=150&height=150&format=png&userId=" + ID;
@@ -112,6 +204,10 @@ window.addEventListener("load", function () {
 
   document.getElementById("group").oninput = function () {
     searchType = searchType === "groups" && "users" || "groups";
+    dostuff();
+  }
+
+  document.getElementById("sort").oninput = function () {
     dostuff();
   }
 

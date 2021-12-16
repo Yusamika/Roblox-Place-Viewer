@@ -33,6 +33,14 @@
         <div style="display:inline-block; vertical-align: middle; text-align: center;">
             <input type ="checkbox" id="group">
             <label for="group"> Group</label><br>
+            <label for="sort">Sorting:</label>
+            <select name="sort" id="sort" style = "margin-bottom: 2px;">
+              <option value="updated">Recently Updated</option>
+              <option value="uploaded">Recently Uploaded</option>
+              <option value="playing">Players</option>
+              <option value="favorites">Favorites</option>
+              <option value="visits">Visits</option>
+            </select> <br>
             <label for="uid">ID</label>
             <input id="uid" name="uid" placeholder="1"><br>
             <button id="search" style="margin-top: 5px;">Search</button>
