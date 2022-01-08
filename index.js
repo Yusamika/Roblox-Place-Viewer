@@ -157,7 +157,7 @@ window.addEventListener("load", function () {
 
       clone = div.cloneNode(true); // true means clone all childNodes and all event handlers
       clone.id = Place.id;
-      clone.href = "https://www.roblox.com/games/" + Place.id + "/" + Place.name;
+      clone.href = "https://www.roblox.com/games/" + Place.id + "/";
 
       document.getElementById("Places").appendChild(clone);
       clone.innerHTML = `
