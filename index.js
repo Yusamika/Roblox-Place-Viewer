@@ -162,9 +162,9 @@ window.addEventListener("load", function () {
       document.getElementById("Places").appendChild(clone);
       clone.innerHTML = `
       <span class="thumbnail-2d-container game-card-thumb-container">
-        <img src="`+Place.icon+`" alt="` +Place.description +`" width="150" height="150" title="` +Place.name +`">
+        <img src="`+Place.icon+`" alt="` +Place.description +`" width="150" height="150" title="` +Place.description +`">
       </span>
-      <div class="game-card-name game-name-title" style="text-overflow: ellipsis;overflow: hidden;" title="` +Place.namee +`">` +Place.name +`
+      <div class="game-card-name game-name-title" style="text-overflow: ellipsis;overflow: hidden;" title="` +Place.name +`">` +Place.name +`
       </div>
       <div class="game-card-info">
         <svg y="16" width="16" height="16">
