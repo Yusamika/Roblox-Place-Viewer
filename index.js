@@ -227,7 +227,7 @@ window.addEventListener("load", function () {
 
   document.getElementById("copy").onmousedown = function () {
     navigator.clipboard
-      .writeText(window.location.hostname + window.location.pathname + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder) + "?searchtype=" + searchType)
+      .writeText("https://" + window.location.hostname + window.location.pathname + "?uid=" + ((uid.value.length > 0 && uid.value) || uid.placeholder) + "?searchtype=" + searchType)
       .then(function () {
         window.alert("Copied link to clipboard!");
       });
