@@ -1,8 +1,8 @@
-var version = "1.5.1.1";
+var version = "1.5.2";
 
 var HttpClientGet = function (aUrl, aCallback, onError) {
   let header = new Headers();
-  var Proxy = "https://cors-anywhere-sf.herokuapp.com/";
+  var Proxy = "https://web-production-497d.up.railway.app/";
   header.append("Origin", window.location);
   onError = onError || console.log;
 
